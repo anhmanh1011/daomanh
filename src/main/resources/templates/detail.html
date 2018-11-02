@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css"/>
+    <script src="/jquery/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/home.css"/>
+    <script src="/js/wow.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/animate.css">
+    <script>
+        new WOW().init();
+    </script>
+    <script src="/js/custom.js"></script>
+
+</head>
+
+<body>
+
+
+<div id="header-detail" class="container-fluid ">
+
+    <div th:replace="Header.html :: header"></div>
+</div>
+
+<div   class="container content-detail">
+
+    <div class="row" th:each="sanpham : ${ChiTietSanPham}">
+
+        <div class="col-sm-2 col-md-2">
+            <h3 >Danh Muc </h3>
+            <ul class="myMenu" th:each="danhmuc : ${listDanhMuc}">
+                <li><a href="#" th:text="${danhmuc.tenDanhMuc}" > </a></li>
+
+            </ul>
+
+        </div>
+
+        <div class="col-sm-8 col-md-8" id="ChiTietSanPham" >
+            <div class="row" >
+
+                <div class="col-sm-3 col-md-3">
+                    <img th:src="${sanpham.hinhSanPham}"  style="max-width: 100%"     alt="">
+                </div>
+                <div class="col-sm-9 col-md-9"  >
+                    <h4 id="ChiTietSanPham-TenSanPham" th:attr="data-value=${sanpham.maSanPham}" th:text="${sanpham.tenSanPham}"></h4>
+                    <h5 style="color: red"    th:text="${sanpham.giaTien}"></h5>
+                    <table class="table"  >
+                        <thead>
+                            <tr>
+                                <td><h5>Màu Sản Phẩm</h5></td>
+
+                                <td><h5>Số Lượng</h5></td>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="ChiTiet : ${sanpham.dsChiTietSanPham}" >
+                           <td> <span class="mau" th:attr="data-mamau=${ChiTiet.mauSanPham.maMau}" th:text="${ChiTiet.mauSanPham.tenMau}"></span></td>
+                            <td> <span  class="soluong" th:attr="data-soluong=${ChiTiet.soLuong}"  th:text="${ChiTiet.soLuong}"></span></td>
+                            <td> <button type="button"  class="btn btn-danger btn-gioHang">Thêm vào giỏ hàng</button></td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-sm-2 col-md-2">
+
+
+            <span th:text="${sanpham.moTa}">
+
+            </span>
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- footer  -->
+<div id="footer" class="container-fluid">
+    <div th:replace="footer.html :: footer"></div>
+</div>
+
+</body>
+
+</html>

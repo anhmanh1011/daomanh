@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css"/>
+    <script src="/jquery/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/home.css"/>
+    <script src="/js/wow.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/animate.css">
+    <script>
+        new WOW().init();
+    </script>
+
+</head>
+
+<body>
+
+
+<div id="header" class="container-fluid " >
+
+<div   th:replace="Header.html :: header"></div>
+</div>
+<!-- infor -->
+<div id="infor" class="container" >
+
+<div  th:replace="infor.html :: infor"></div>
+<!-- infor -->
+</div>
+<div   id="title_sanpham" class="container">
+<div  th:replace="conten.html :: conten"></div>
+</div>
+
+<!-- footer  -->
+<div id="footer" class="container-fluid">
+<div th:replace="footer.html :: footer"></div>
+</div>
+
+</body>
+
+</html>

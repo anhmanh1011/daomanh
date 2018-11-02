@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="header">
+
+<!-- header-->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light non_nav">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav navbar-center">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Trang chu <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dich Vu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Lien He</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-right">
+            <ul class="navbar-nav">
+
+                <li th:if="${username}" class="nav-item">
+
+                    <a class="nav-link" th:text="${username}" href="#"></a>
+                </li>
+                <li th:if="${username}" class="nav-item">
+                    <a class="nav-link" href="#">LogOut</a>
+                </li>
+
+                <li th:unless="${username}" class="nav-item">
+
+                    <a class="nav-link"  href="#">Dang Nhap</a>
+                </li>
+                <li th:unless="${username}" class="nav-item">
+                    <a class="nav-link" href="#">Dang Ky</a>
+                </li>
+
+                <li id="gioHang" class="nav-item"><a style="display: flex" href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbSlXUplHWsxWl2aAgpx6ZVa35FqSMwBa2uTsMBKfby53iZgIC"
+                                                      alt="" width="40px" height="40px"/>
+                    <div class="icon-giohang" th:if="${soLuongGioHang}">
+                        <span th:text="${soLuongGioHang}"></span>
+                    </div>
+                    <div th:unless="${soLuongGioHang}">
+
+                    </div>
+
+
+                </a></li>
+
+
+
+
+            </ul>
+        </div>
+
+    </nav>
+
+    <div class="even_header container  wow rubberBand">
+        <span>Ngay 27/07/2018- 29/07/2018</span><br/>
+        <span style="font-size:50px">Mua 1 thang 1</span><br/>
+        <button>Xem Ngay</button>
+
+    </div>
+
+
+</body>
+</html>

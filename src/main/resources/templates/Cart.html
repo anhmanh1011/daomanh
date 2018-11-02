@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css"/>
+    <script src="/jquery/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/home.css"/>
+    <script src="/js/wow.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/animate.css">
+    <script>
+        new WOW().init();
+    </script>
+    <script src="/js/custom.js"></script>
+
+</head>
+
+<body>
+
+
+<div id="header-detail" class="container-fluid ">
+
+    <div th:replace="Header.html :: header"></div>
+</div>
+
+<div class="container card-content">
+    <div class="row">
+
+        <div class="col-sm-12 col-md-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <td><h5>Tên sản phẩm</h5></td>
+                    <td><h5>Màu Sản Phẩm </h5></td>
+                    <td><h5>Số Lượng</h5></td>
+                    <td>Gia Tien</td>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="GioHang : ${gioHang}" >
+                    <td> <span class="sanpham" th:attr="data-masanpham=${GioHang.SanPham.maSanPham}" th:text="${GioHang.sanPham.tenSanPham}"></span></td>
+                    <td> <span class="mau" th:attr="data-mamau=${GioHang.mauSanPham.maMau}" th:text="${GioHang.mauSanPham.tenMau}"></span></td>
+                    <td> <input type="number"   class="soluong" th:attr="data-soluong=${GioHang.soLuong}"  th:value="${GioHang.soLuong}" min="1"></td>
+                    <td> <span   class="giaTien"  th:text="${GioHang.sanPham.giaTien}"></span></td>
+                    <td>
+                        <button class="btn btn-danger"> xóa </button> </td>
+
+
+                </tr>
+
+                </tbody>
+            </table>
+            <h4 >Tong Tien :<span style="color: red">1,500,000 </span>    </h4>
+
+
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <h3>Thong tin San pham</h3>
+            <form action="">
+            <div class="form-group">
+                <lable for="tennguoimua" > Ten Nguoi Mua / Nhan  </lable>
+                <input type="text" id="tennguoimua" placeholder="Tên Người Nhận " class="form-control"> <br/>
+
+                <lable for="dienthoai" > Điện thoại liên lạc </lable>
+                <input type="text" id="dienthoai" placeholder="Điện Thoại Liên Lạc" class="form-control"><br/>
+
+                <div class="radio">
+                    <label><input type="radio" name="optradio" checked>Nhận hàng tại nhà/công ty/bưu điện</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="optradio">Nhận hàng tại cửa hàng của chúng tôi gần nhất gần nhất</label><br/>
+                </div>
+
+
+                <lable for="diachi" >Dia Chi Nhan Hang </lable>
+                <input type="text" id="diachi" placeholder="Địa Chỉ Nhận Hàng " class="form-control"><br/>
+
+                <lable for="ghichu" > Ghi chu  </lable>
+                <textarea type="text" id="ghichu" placeholder="Ghi  Chú " class="form-control"></textarea><br/>
+                <input type="submit" class="btn btn-primary" value="Dat hang">
+            </form>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+
+<!-- footer  -->
+<div id="footer" class="container-fluid">
+    <div th:replace="footer.html :: footer"></div>
+</div>
+
+</body>
+
+</html>

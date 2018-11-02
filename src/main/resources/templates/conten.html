@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="conten">
+
+<!-- danh sach san pham -->
+
+    <span>San Pham Hot</span>
+
+    <div class="row" style="margin-top: 42px">
+        <div class="col-md-3 col-sm-6" th:each="sanpham : ${dsSanPham}">
+            <a th:href="@{'/chitiet/' + ${sanpham.maSanPham}}">
+            <div class=" sanpham wow zoomIn">
+                <img th:src="${sanpham.hinhSanPham}"
+                     height="256px" alt="hinh"><br>
+                <span th:text="${sanpham.tenSanPham}"></span><br>
+                <span class="gia" th:text="${sanpham.maSanPham}"> </span>
+            </div>
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+</body>
+</html>
