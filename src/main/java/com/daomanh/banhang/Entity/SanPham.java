@@ -17,6 +17,7 @@ public class SanPham {
 
     String tenSanPham;
     String giaTien;
+    @Column(columnDefinition = "TEXT")
     String moTa;
     String hinhSanPham;
 

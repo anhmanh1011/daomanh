@@ -45,47 +45,53 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="GioHang : ${gioHang}" >
+                <tr th:each="GioHang : ${gioHang}" th:attr="data-maChiTiet=${GioHang.maChiTiet}">
                     <td> <span class="sanpham" th:attr="data-masanpham=${GioHang.SanPham.maSanPham}" th:text="${GioHang.sanPham.tenSanPham}"></span></td>
                     <td> <span class="mau" th:attr="data-mamau=${GioHang.mauSanPham.maMau}" th:text="${GioHang.mauSanPham.tenMau}"></span></td>
                     <td> <input type="number"   class="soluong" th:attr="data-soluong=${GioHang.soLuong}"  th:value="${GioHang.soLuong}" min="1"></td>
-                    <td> <span   class="giaTien"  th:text="${GioHang.sanPham.giaTien}"></span></td>
+                    <td><span class="giaTien" th:attr="data-giatien=${GioHang.sanPham.giaTien}"
+                              th:text="${GioHang.sanPham.giaTien}"></span></td>
                     <td>
-                        <button class="btn btn-danger"> xóa </button> </td>
+                        <button class="btn btn-danger xoa-giohang"> xóa</button>
+                    </td>
 
 
                 </tr>
 
                 </tbody>
             </table>
-            <h4 >Tong Tien :<span style="color: red">1,500,000 </span>    </h4>
+            <h4>Tong Tien :<span id="tongtien" style="color: red">1,500,000 </span></h4>
 
 
         </div>
 
         <div class="col-sm-12 col-md-6">
             <h3>Thong tin San pham</h3>
-            <form action="">
+            <form th:action="@{/cart}" method="post">
             <div class="form-group">
-                <lable for="tennguoimua" > Ten Nguoi Mua / Nhan  </lable>
-                <input type="text" id="tennguoimua" placeholder="Tên Người Nhận " class="form-control"> <br/>
+                <lable for="tennguoimua"> Tên người mua/ Nhận</lable>
+                <input type="text" id="tennguoimua" name="tenKhachHang" placeholder="Tên Người Nhận "
+                       class="form-control"> <br/>
 
                 <lable for="dienthoai" > Điện thoại liên lạc </lable>
-                <input type="text" id="dienthoai" placeholder="Điện Thoại Liên Lạc" class="form-control"><br/>
+                <input type="text" id="dienthoai" name="soDienThoai" placeholder="Điện Thoại Liên Lạc"
+                       class="form-control"><br/>
 
                 <div class="radio">
-                    <label><input type="radio" name="optradio" checked>Nhận hàng tại nhà/công ty/bưu điện</label>
+                    <label><input type="radio" name="hinhThucGiaoHang" value="giao hang tận nơi" checked>Nhận hàng tại
+                        nhà/công ty/bưu điện</label>
                 </div>
                 <div class="radio">
-                    <label><input type="radio" name="optradio">Nhận hàng tại cửa hàng của chúng tôi gần nhất gần nhất</label><br/>
+                    <label><input type="radio" name="hinhThucGiaoHang" value="nhận hàng tại cửa hàng ">Nhận hàng tại cửa
+                        hàng của chúng tôi gần nhất gần nhất</label><br/>
                 </div>
 
 
                 <lable for="diachi" >Dia Chi Nhan Hang </lable>
-                <input type="text" id="diachi" placeholder="Địa Chỉ Nhận Hàng " class="form-control"><br/>
+                <input type="text" id="diachi" name="diachi" placeholder="Địa Chỉ Nhận Hàng " class="form-control"><br/>
 
                 <lable for="ghichu" > Ghi chu  </lable>
-                <textarea type="text" id="ghichu" placeholder="Ghi  Chú " class="form-control"></textarea><br/>
+                <textarea type="text" id="ghichu" name="ghiChu" placeholder="Ghi  Chú " class="form-control"></textarea><br/>
                 <input type="submit" class="btn btn-primary" value="Dat hang">
             </form>
             </div>
