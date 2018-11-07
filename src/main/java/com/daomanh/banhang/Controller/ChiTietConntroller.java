@@ -31,7 +31,7 @@ public class ChiTietConntroller {
 
     @GetMapping("chitiet")
     public  String defaul(Model model, Principal principal){
-        if(principal != null){
+        if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             model.addAttribute("username",loginedUser.getUsername());
 

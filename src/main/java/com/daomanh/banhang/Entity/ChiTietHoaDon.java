@@ -3,23 +3,28 @@ package com.daomanh.banhang.Entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "CHITIETHOADON")
+@Entity
+@Table(name = "ChiTietHoaDon")
 public class ChiTietHoaDon implements Serializable {
 
-    public HoaDon getHoaDon() {
-        return hoaDon;
+    @EmbeddedId
+    ChiTietHoaDonId chiTietHoaDonId;
+
+    int soLuong;
+
+    int giaTien;
+
+
+    public ChiTietHoaDon() {
     }
 
-    public void setHoaDon(HoaDon hoaDon) {
-        this.hoaDon = hoaDon;
+
+    public ChiTietHoaDonId getChiTietHoaDonId() {
+        return chiTietHoaDonId;
     }
 
-    public SanPham getSanPham() {
-        return sanPham;
-    }
-
-    public void setSanPham(SanPham sanPham) {
-        this.sanPham = sanPham;
+    public void setChiTietHoaDonId(ChiTietHoaDonId chiTietHoaDonId) {
+        this.chiTietHoaDonId = chiTietHoaDonId;
     }
 
     public int getSoLuong() {
@@ -37,25 +42,4 @@ public class ChiTietHoaDon implements Serializable {
     public void setGiaTien(int giaTien) {
         this.giaTien = giaTien;
     }
-
-    @Id
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "maHoaDon")
-    HoaDon hoaDon;
-
-    @Id
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "maSanPham")
-    SanPham sanPham;
-
-
-
-    int soLuong;
-
-    int giaTien;
-
-
-
-
-
 }

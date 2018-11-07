@@ -18,7 +18,7 @@ public class api {
 
     @GetMapping("/themGioHang")
     @ResponseBody
-    public String themGioHang( @RequestParam int maSp, @RequestParam int maMau, @RequestParam int soLuong , HttpSession httpSession){
+    public String themGioHang(@RequestParam int maSp, @RequestParam int maMau, @RequestParam int soLuong, @RequestParam int maChiTiet, HttpSession httpSession) {
 
 
         if( httpSession.getAttribute("gioHangs") == null) {
@@ -26,6 +26,7 @@ public class api {
             gioHang.getSanPham().setMaSanPham(maSp);
             gioHang.getMauSanPham().setMaMau(maMau);
             gioHang.setSoLuong(1);
+            gioHang.setMaChiTiet(maChiTiet);
             List<GioHang> gioHangs = new ArrayList<>();
             gioHangs.add(gioHang);
             httpSession.setAttribute("gioHangs", gioHangs   );
@@ -40,6 +41,7 @@ public class api {
                 GioHang gioHang = new GioHang();
                 gioHang.getSanPham().setMaSanPham(maSp);
                 gioHang.getMauSanPham().setMaMau(maMau);
+                gioHang.setMaChiTiet(maChiTiet);
                 gioHang.setSoLuong(1);
                 hangList.add(gioHang);
 
@@ -51,12 +53,7 @@ public class api {
 
             }
 
-            hangList.forEach(new Consumer<GioHang>() {
-                @Override
-                public void accept(GioHang gioHang) {
-                    System.out.println(gioHang);
-                }
-            });
+
 
             return  hangList.size() + "";
 
@@ -81,7 +78,45 @@ public class api {
 
     }
 
+    @GetMapping("updateGioHang")
+    @ResponseBody
+    private void updateGioHang(@RequestParam int maSp, @RequestParam int maMau, @RequestParam int soLuong, HttpSession httpSession) {
 
+        if (httpSession.getAttribute("gioHangs") != null) {
+            List<GioHang> hangList = (List<GioHang>) httpSession.getAttribute("gioHangs");
+            int vitri = kiemTraTonTaiSanPham(maSp, maMau, hangList);
+
+            hangList.get(vitri).setSoLuong(soLuong);
+            hangList.get(vitri).getMauSanPham().setMaMau(maMau);
+
+            hangList.forEach(new Consumer<GioHang>() {
+                @Override
+                public void accept(GioHang gioHang) {
+                    System.out.println(gioHang.getSoLuong());
+                }
+            });
+
+
+        }
+
+    }
+
+    @GetMapping("deleteGioHang")
+    @ResponseBody
+    private String deleteGioHang(@RequestParam int maSp, @RequestParam int maMau, HttpSession httpSession) {
+
+        if (httpSession.getAttribute("gioHangs") != null) {
+            List<GioHang> hangList = (List<GioHang>) httpSession.getAttribute("gioHangs");
+            int vitri = kiemTraTonTaiSanPham(maSp, maMau, hangList);
+
+            hangList.remove(vitri);
+            return "success";
+
+
+        }
+        return "failure";
+
+    }
 
 
 }

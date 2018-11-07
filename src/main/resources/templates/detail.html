@@ -66,7 +66,11 @@
                         <tr th:each="ChiTiet : ${sanpham.dsChiTietSanPham}" >
                            <td> <span class="mau" th:attr="data-mamau=${ChiTiet.mauSanPham.maMau}" th:text="${ChiTiet.mauSanPham.tenMau}"></span></td>
                             <td> <span  class="soluong" th:attr="data-soluong=${ChiTiet.soLuong}"  th:text="${ChiTiet.soLuong}"></span></td>
-                            <td> <button type="button"  class="btn btn-danger btn-gioHang">Thêm vào giỏ hàng</button></td>
+                            <td>
+                                <button type="button" th:attr="data-chitiet=${ChiTiet.maChiTiet}"
+                                        class="btn btn-danger btn-gioHang">Thêm vào giỏ hàng
+                                </button>
+                            </td>
 
                         </tr>
 

@@ -2,6 +2,7 @@ package com.daomanh.banhang.Entity;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "CHITIETSANPHAM")
 public class ChiTietSanPham {
@@ -9,6 +10,7 @@ public class ChiTietSanPham {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "maChiTiet")
     int maChiTiet;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -25,6 +27,9 @@ public class ChiTietSanPham {
 
     int soLuong;
     String ngayNhap;
+
+//    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+//    Set<ChiTietHoaDon> danhSachChiTietHoaDon;
 
     public ChiTietSanPham() {
     }

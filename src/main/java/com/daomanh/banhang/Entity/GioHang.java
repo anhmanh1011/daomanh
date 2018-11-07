@@ -4,8 +4,17 @@ public class GioHang {
 
    private SanPham sanPham = new SanPham();
    private MauSanPham mauSanPham = new MauSanPham();
+    private int maChiTiet;
 
-   private int soLuong;
+    public int getMaChiTiet() {
+        return maChiTiet;
+    }
+
+    public void setMaChiTiet(int maChiTiet) {
+        this.maChiTiet = maChiTiet;
+    }
+
+    private int soLuong;
 
     public GioHang() {
     }

@@ -1,18 +1,17 @@
 package com.daomanh.banhang.Controller;
 
 
-import com.daomanh.banhang.Entity.GioHang;
-import com.daomanh.banhang.Entity.MauSanPham;
-import com.daomanh.banhang.Entity.SanPham;
-import com.daomanh.banhang.repository.MauSanPhamRepository;
-import com.daomanh.banhang.repository.SanPhamRepository;
+import com.daomanh.banhang.Entity.*;
+import com.daomanh.banhang.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 @Controller
 public class cart_Controller {
@@ -22,6 +21,16 @@ public class cart_Controller {
 
     @Autowired
     MauSanPhamRepository mauSanPhamRepository;
+
+    @Autowired
+    HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    ChiTietHoaDonRepository chiTietHoaDonRepository;
+
+    @Autowired
+    ChiTietSanPhamRepository chiTietSanPhamRepository;
+
 
     @GetMapping("/cart")
     public String Default(HttpSession httpSession, ModelMap modelMap){
@@ -45,6 +54,53 @@ public class cart_Controller {
         return "Cart";
     }
 
+    @PostMapping("/cart")
+    public String themHoaDon(HoaDon hoaDon, HttpSession httpSession) {
+
+
+        hoaDon.setNgaylap(new Date().toString());
+        hoaDon.setTinhTrang(false);
+
+
+        if (httpSession.getAttribute("gioHangs") != null) {
+
+
+            hoaDonRepository.save(hoaDon);
+            hoaDonRepository.flush();
+            System.out.println(hoaDon);
+
+            List<GioHang> hangList = (List<GioHang>) httpSession.getAttribute("gioHangs");
+            hangList.forEach(new Consumer<GioHang>() {
+                @Override
+                public void accept(GioHang gioHang) {
+                    System.out.println(gioHang.getMaChiTiet());
+                }
+            });
+
+            for (GioHang gioHang : hangList) {
+                ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
+
+                ChiTietHoaDonId chiTietHoaDonId = new ChiTietHoaDonId();
+
+                chiTietHoaDonId.setMaHoaDon(hoaDon.getMaHoaDon());
+
+                chiTietHoaDonId.setMaChiTiet(gioHang.getMaChiTiet());
+
+                chiTietHoaDon.setChiTietHoaDonId(chiTietHoaDonId);
+
+
+                chiTietHoaDon.setSoLuong(gioHang.getSoLuong());
+                chiTietHoaDon.setGiaTien(gioHang.getSoLuong() * Integer.valueOf(gioHang.getSanPham().getGiaTien()));
+                chiTietHoaDonRepository.save(chiTietHoaDon);
+
+            }
+
+
+        }
+
+
+        return "Cart";
+    }
 
 
 }
