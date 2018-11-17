@@ -1,7 +1,9 @@
 package com.daomanh.banhang.Controller;
 
+import com.daomanh.banhang.Entity.DanhMucSanPham;
 import com.daomanh.banhang.Entity.NhanVien;
 import com.daomanh.banhang.Entity.SanPham;
+import com.daomanh.banhang.repository.DanhMucSanPhamRepository;
 import com.daomanh.banhang.repository.SanPhamRepository;
 import com.daomanh.banhang.service.SanPhamService;
 import com.daomanh.banhang.service.UserDetailsServiceImpl;
@@ -39,6 +41,9 @@ public class home_Controller {
     @Autowired
     SanPhamService sanPhamService;
 
+    @Autowired
+    DanhMucSanPhamRepository danhMucSanPhamRepository;
+
     @GetMapping("/home")
     public String home(Model model, Principal principal){
 
@@ -49,10 +54,13 @@ public class home_Controller {
         }
 
         List<SanPham> sanPhams = new ArrayList<>();
-        Page<SanPham> listProduct = sanPhamService.findListProduct();
+        Page<SanPham> listProduct = sanPhamService.findListProduct(0, 20);
 
         sanPhams = listProduct.getContent();
         model.addAttribute("dsSanPham",sanPhams);
+
+        List<DanhMucSanPham> listDanhMucSanPham = danhMucSanPhamRepository.findAll();
+        model.addAttribute("listDanhMuc", listDanhMucSanPham);
 
 
         return "home";

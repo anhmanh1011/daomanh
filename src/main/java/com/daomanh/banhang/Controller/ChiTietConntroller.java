@@ -47,6 +47,7 @@ public class ChiTietConntroller {
             model.addAttribute("username",loginedUser.getUsername());
 
         }
+
         SanPham sanPham = sanPhamRepository.getOne(masanpham);
         model.addAttribute("ChiTietSanPham",sanPham);
         List<DanhMucSanPham> listDanhMucSanPham = danhMucSanPhamRepository.findAll();

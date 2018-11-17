@@ -13,23 +13,24 @@ public class ChiTietSanPham {
     @Column(name = "maChiTiet")
     int maChiTiet;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "maSanPham")
     SanPham sanPham;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "maSize")
     SizeSanPham sizeSanPham;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "maMau")
     MauSanPham mauSanPham;
 
     int soLuong;
     String ngayNhap;
 
-//    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-//    Set<ChiTietHoaDon> danhSachChiTietHoaDon;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "maChiTiet")
+    Set<ChiTietHoaDon> danhSachChiTietHoaDon;
 
     public ChiTietSanPham() {
     }
@@ -90,6 +91,16 @@ public class ChiTietSanPham {
         this.ngayNhap = ngayNhap;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "ChiTietSanPham{" +
+                "maChiTiet=" + maChiTiet +
+                ", sanPham=" + sanPham +
+                ", sizeSanPham=" + sizeSanPham +
+                ", mauSanPham=" + mauSanPham +
+                ", soLuong=" + soLuong +
+                ", ngayNhap='" + ngayNhap + '\'' +
+                ", danhSachChiTietHoaDon=" + danhSachChiTietHoaDon +
+                '}';
+    }
 }

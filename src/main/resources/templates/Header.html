@@ -21,6 +21,18 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Trang chu <span class="sr-only">(current)</span></a>
                 </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
+                    <div style="background-color: darkgray;" class="dropdown-menu">
+                        <a class="dropdown-item" th:each="danhmuc : ${listDanhMuc}" th:text="${danhmuc.tenDanhMuc}"
+                           th:href="@{'/sanpham/' + ${danhmuc.maDanhMuc}}"></a>
+
+                    </div>
+                </li>
+
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">Dich Vu</a>
                 </li>

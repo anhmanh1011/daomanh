@@ -1,5 +1,5 @@
-$( document ).ready(function() {
-   
+$(document).ready(function () {
+
     $('.btn-gioHang').click(function () {
         var maSanPham = $('#ChiTietSanPham-TenSanPham').attr("data-value");
         var maMau = $(this).closest('tr').find('.mau').attr('data-mamau');
@@ -18,9 +18,9 @@ $( document ).ready(function() {
             },
             success: function (data) {
 
-                if(   $('#gioHang').find('div').class == "icon-giohang"){
+                if ($('#gioHang').find('div').class == "icon-giohang") {
                     $('#gioHang').find('span').html(data);
-                }else {
+                } else {
                     $('#gioHang').find('div').addClass("icon-giohang");
                     $('#gioHang').find('div').html("<span> " + data + "</span>");
                 }
@@ -32,20 +32,19 @@ $( document ).ready(function() {
     loadSp();
 
     function loadSp(isEvenChange) {
-        var  tongTiensp = 0;
+        var tongTiensp = 0;
 
         $('.giaTien').each(function () {
 
             var soLuong = $(this).closest('tr').find('.soluong').val();
             var giatien = parseFloat($(this).attr('data-giatien')) * soLuong;
 
-            var format=  parseFloat(giatien).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.").toString();
+            var format = parseFloat(giatien).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.").toString();
             // alert(parseFloat(tongTiensp + parseFloat(format)))
             var tong = tongTiensp + giatien;
             tongTiensp = tong;
 
-            if(!isEvenChange )
-            {
+            if (!isEvenChange) {
 
                 $(this).html(format);
             }
@@ -120,8 +119,197 @@ $( document ).ready(function() {
     });
 
 
+    $('body').on('click', '.page-item', function () {
+
+        $('.page-item').removeClass('active');
+        $(this).addClass('active');
+
+        var pageNum = $(this).text();
+        $.ajax({
+            url: '/api/themsanpham',
+            type: 'Get',
+            data: {
+                pageNumber: pageNum
+            },
+
+            success: function (data) {
 
 
-    
-    
+                var bodySanPham = $('tbody');
+                bodySanPham.empty();
+                bodySanPham.append(data);
+            }
+
+
+        });
+
+
+    });
+
+    $('#checkAll').change(function () {
+
+        if (this.checked) {
+            $('#table-sanpham input').each(function () {
+                $(this).attr('checked', true);
+            })
+        }
+        else {
+            $('#table-sanpham input').each(function () {
+                $(this).attr('checked', false);
+            })
+
+        }
+
+
+    });
+
+
+    $('#xoaSanPham').click(function () {
+
+        var check = $('tbody input:checked');
+        check.each(function () {
+            var masanpham = this.value;
+            var This = $(this);
+            $.ajax({
+                url: '/api/xoasanpham',
+                type: 'Get',
+                data: {
+                    maSanPham: masanpham
+                },
+
+                success: function (data) {
+
+                    This.closest('tr').remove();
+
+                }
+
+
+            });
+
+        })
+
+
+    });
+
+
+    var files = [];
+    var hinhSanPham = "";
+
+    $('#file').change(function (event) {
+
+        files = event.target.files;
+        hinhSanPham = files[0].name;
+        console.log(hinhSanPham);
+        forms = new FormData();
+        forms.append('hinhanh', files[0]);
+
+        $.ajax({
+            url: '/api/upLoadFile',
+            type: 'Post',
+            data: forms,
+            contentType: false,
+            processData: false,
+            enctype: "multipart/form-data",
+
+            success: function (data) {
+
+                $('#hinhSanPham').val(hinhSanPham);
+
+            }
+
+
+        });
+
+    });
+
+    $('#form-themSanPham').submit(function (e) {
+
+
+
+
+        //  e.preventDefault(); // avoid to execute the actual submit of the form.
+    });
+
+
+    $('body').on('click', '.btn-xoaChiTiet', function () {
+
+        var a = $(this).closest('div');
+        a.remove();
+        refesh();
+
+
+    });
+
+
+    function refesh() {
+
+        var i = 0;
+        var j = 0;
+        $('#danhSachChiTiet').find('.Mau').each(function () {
+            $(this).attr('name', 'dsChiTietSanPham[' + i + '].mauSanPham.maMau');
+            i++;
+
+
+        });
+        $('#danhSachChiTiet').find('.soLuong').each(function () {
+            $(this).attr('name', 'dsChiTietSanPham[' + j + '].soLuong');
+
+            j++;
+        });
+
+    }
+
+    $('.btn-themChiTiet').click(function () {
+
+        var themChiTiet = $('#chiTiet').clone().removeAttr('id');
+
+
+        $('#danhSachChiTiet').append(themChiTiet);
+        refesh();
+
+
+    });
+
+
+    $('#themSanPham').click(function (e) {
+        //
+        // var tensp = $('input[name=tenSanPham]').val();
+        // var giaTien = $('input[name=giaTien]').val();
+        // var moTa = $('textarea[name=moTa]').val();
+        // var maDanhMuc = $('select[name=maDanhMuc]').val();
+        // var maMau=[];
+        // var i = 0;
+        // $('#danhSachChiTiet').find('.Mau').each(function () {
+        //    maMau[i] = $(this).val();
+        //
+        //     alert(maMau[i]);
+        // });
+
+        e.preventDefault();
+
+        alert($('#form-themSanPham').serialize());
+
+
+        $.ajax({
+            url: '/api/SaveSanPham',
+            type: 'Post',
+            data:
+                $('#form-themSanPham').serialize(),
+            hinhSanPham: hinhSanPham
+
+            ,
+
+            success: function (data) {
+
+                alert(data);
+
+            }
+
+
+        });
+
+
+    });
+
+
 });

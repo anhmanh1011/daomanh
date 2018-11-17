@@ -1,12 +1,36 @@
  package com.daomanh.banhang.Controller;
 
 
-import com.daomanh.banhang.Entity.GioHang;
+ import com.daomanh.banhang.Entity.*;
+ import com.daomanh.banhang.repository.ChiTietHoaDonRepository;
+ import com.daomanh.banhang.repository.ChiTietSanPhamRepository;
+ import com.daomanh.banhang.repository.HoaDonRepository;
+ import com.daomanh.banhang.repository.SanPhamRepository;
+ import com.daomanh.banhang.service.SanPhamService;
+ import org.hibernate.Session;
+ import org.hibernate.SessionFactory;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.core.io.ClassPathResource;
+ import org.springframework.core.io.PathResource;
+ import org.springframework.data.domain.Page;
+ import org.springframework.transaction.annotation.Transactional;
+ import org.springframework.ui.Model;
+ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+ import org.springframework.web.multipart.MultipartFile;
+ import org.springframework.web.multipart.MultipartHttpServletRequest;
+ import org.springframework.web.multipart.MultipartRequest;
+ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+ import javax.persistence.EntityManager;
+ import javax.persistence.EntityManagerFactory;
+ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+ import java.io.File;
+ import java.io.IOException;
+ import java.net.MalformedURLException;
+ import java.nio.file.Paths;
+ import java.util.*;
 import java.util.function.Consumer;
 
 @RestController
@@ -14,6 +38,20 @@ import java.util.function.Consumer;
 @SessionAttributes("gioHangs")
 public class api {
 
+    @Autowired
+    SanPhamService sanPhamService;
+
+    @Autowired
+    SanPhamRepository sanPhamRepository;
+
+    @Autowired
+    HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    ChiTietHoaDonRepository chiTietHoaDonRepository;
+
+    @Autowired
+    ChiTietSanPhamRepository chiTietSanPhamRepository;
 
 
     @GetMapping("/themGioHang")
@@ -117,6 +155,122 @@ public class api {
         return "failure";
 
     }
+
+    @GetMapping("/themsanpham")
+    @ResponseBody
+    public String themsanpham(@RequestParam int pageNumber, Model model) {
+        System.out.println(pageNumber);
+
+        Page<SanPham> listProduct = sanPhamService.findListProduct(pageNumber - 1, 5);
+        List<SanPham> content = listProduct.getContent();
+        String html = "";
+        for (int i = 0; i < content.size(); i++) {
+            html += "<tr>" +
+                    "                  <td>\n" +
+                    "                      <div class=\"checkbox\">\n" +
+                    "                          <label><input class=\"checkboxsanpham\" type=\"checkbox\" value=\" " + content.get(i).getMaSanPham() + "\"></label>\n" +
+                    "                      </div>\n" +
+                    "\n" +
+                    "                  </td>\n" +
+                    "\n" +
+                    "                  <td> <span class=\"sanpham\" data-masanpham= \" " + content.get(i).getMaSanPham() + "\" > " + content.get(i).getTenSanPham() + " </span></td>\n" +
+                    "                  <td> <span class=\"danhmuc\" data-madanhmuc=\" " + content.get(i).getDanhMucSanPham().getMaDanhMuc() + "\" > " + content.get(i).getDanhMucSanPham().getTenDanhMuc() + " </span></td>\n" +
+                    "                  <td><span class=\"giaTien\" data-giatien=\" " + content.get(i).getGiaTien() + "\" > " + content.get(i).getGiaTien() + " </span></td>\n" +
+                    "                  <td>\n" +
+                    "\n" +
+                    "              </tr>";
+
+        }
+
+
+        return html;
+    }
+
+    @Autowired
+    EntityManager entityManager;
+
+
+    @GetMapping("/xoasanpham")
+    @ResponseBody
+    @Transactional
+    public String xoaSanPham(@RequestParam int maSanPham) {
+
+        System.out.println(maSanPham);
+
+
+        SanPham sanpham = sanPhamRepository.getOne(maSanPham);
+
+        List<ChiTietSanPham> dsChiTietSanPham = sanpham.getDsChiTietSanPham();
+
+        dsChiTietSanPham.forEach(new Consumer<ChiTietSanPham>() {
+            @Override
+            public void accept(ChiTietSanPham chiTietSanPham) {
+
+                entityManager.createQuery(" DELETE ChiTietHoaDon  WHERE ma_chi_tiet = " + chiTietSanPham.getMaChiTiet()).executeUpdate();
+                entityManager.createQuery(" DELETE CHITIETSANPHAM  WHERE ma_chi_tiet = " + chiTietSanPham.getMaChiTiet()).executeUpdate();
+
+            }
+        });
+
+        sanPhamRepository.deleteById(maSanPham);
+        System.out.println("xoa ok");
+
+
+        return "ok";
+
+    }
+
+
+    @Autowired
+    ServletContext context;
+
+    @PostMapping("upLoadFile")
+    @ResponseBody
+    public String upLoad(MultipartHttpServletRequest request) {
+
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        Iterator<String> fileNames = request.getFileNames();
+        MultipartFile mpf = request.getFile(fileNames.next());
+        System.out.println(mpf.getOriginalFilename());
+
+
+        String path = classLoader.getResource("static/image/").getPath();
+
+        System.out.println(path);
+        File file = new File(path + mpf.getOriginalFilename());
+
+
+        try {
+            mpf.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return "true";
+
+    }
+
+    @PostMapping("SaveSanPham")
+    @ResponseBody
+    @Transactional
+    public String themSanPham(@ModelAttribute SanPham sp, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+
+            System.out.println(bindingResult.getFieldError());
+
+        }
+
+        System.out.println(sp);
+
+        sanPhamRepository.save(sp);
+
+
+        return "true";
+    }
+
 
 
 }

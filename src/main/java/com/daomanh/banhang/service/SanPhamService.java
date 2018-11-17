@@ -16,8 +16,8 @@ public class SanPhamService {
 
 
     @Transactional
-    public Page<SanPham> findListProduct() {
-        return sanPhamRepository.findAll(new PageRequest(0, 20));
+    public Page<SanPham> findListProduct(int firt, int end) {
+        return sanPhamRepository.findAll(new PageRequest(firt, end));
     }
 
 }

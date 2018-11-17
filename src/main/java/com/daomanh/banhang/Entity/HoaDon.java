@@ -22,8 +22,9 @@ public class HoaDon {
     @Column(columnDefinition = "TEXT")
     String ghiChu;
 
-//    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-//    Set<ChiTietHoaDon> danhSachChiTietHoaDon;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "maHoaDon")
+    Set<ChiTietHoaDon> danhSachChiTietHoaDon;
 
     public String getDiachi() {
         return diachi;
