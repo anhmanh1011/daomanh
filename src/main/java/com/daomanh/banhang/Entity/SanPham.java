@@ -1,6 +1,7 @@
 package com.daomanh.banhang.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "SANPHAM")
@@ -10,7 +11,7 @@ public class SanPham {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int maSanPham;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "maDanhMuc ", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     DanhMucSanPham danhMucSanPham;
 
@@ -23,10 +24,10 @@ public class SanPham {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "maSanPham")
-    Set<ChiTietSanPham> dsChiTietSanPham;
+    List<ChiTietSanPham> dsChiTietSanPham;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(name = "CHITIETKHUYENMAI",
             joinColumns ={@JoinColumn(name = "maSanPham",referencedColumnName = "maSanPham")},
             inverseJoinColumns ={@JoinColumn(name = "maKhuyenMai",referencedColumnName = "maKhuyenMai")} )
@@ -36,7 +37,7 @@ public class SanPham {
     public SanPham() {
     }
 
-    public SanPham(DanhMucSanPham danhMucSanPham, String tenSanPham, String giaTien, String moTa, String hinhSanPham, Set<ChiTietSanPham> dsChiTietSanPham, Set<KhuyenMai> danhSachKhuyenMai) {
+    public SanPham(DanhMucSanPham danhMucSanPham, String tenSanPham, String giaTien, String moTa, String hinhSanPham, List<ChiTietSanPham> dsChiTietSanPham, Set<KhuyenMai> danhSachKhuyenMai) {
         this.danhMucSanPham = danhMucSanPham;
         this.tenSanPham = tenSanPham;
         this.giaTien = giaTien;
@@ -46,11 +47,11 @@ public class SanPham {
         this.danhSachKhuyenMai = danhSachKhuyenMai;
     }
 
-    public Set<ChiTietSanPham> getDsChiTietSanPham() {
+    public List<ChiTietSanPham> getDsChiTietSanPham() {
         return dsChiTietSanPham;
     }
 
-    public void setDsChiTietSanPham(Set<ChiTietSanPham> dsChiTietSanPham) {
+    public void setDsChiTietSanPham(List<ChiTietSanPham> dsChiTietSanPham) {
         this.dsChiTietSanPham = dsChiTietSanPham;
     }
 
