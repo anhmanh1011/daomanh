@@ -176,9 +176,9 @@ public class api {
                     "                  <td> <span class=\"sanpham\" data-masanpham= \" " + content.get(i).getMaSanPham() + "\" > " + content.get(i).getTenSanPham() + " </span></td>\n" +
                     "                  <td> <span class=\"danhmuc\" data-madanhmuc=\" " + content.get(i).getDanhMucSanPham().getMaDanhMuc() + "\" > " + content.get(i).getDanhMucSanPham().getTenDanhMuc() + " </span></td>\n" +
                     "                  <td><span class=\"giaTien\" data-giatien=\" " + content.get(i).getGiaTien() + "\" > " + content.get(i).getGiaTien() + " </span></td>\n" +
-                    "                  <td>\n" +
+
                     "\n" +
-                    "              </tr>";
+                    "<td>       <buttion data-maSanPham= \"" + content.get(i).getMaSanPham() + "\"  class=\" btn btn-primary btnSua \"  >  Sửa</buttion></td></tr>";
 
         }
 
@@ -221,9 +221,6 @@ public class api {
     }
 
 
-    @Autowired
-    ServletContext context;
-
     @PostMapping("upLoadFile")
     @ResponseBody
     public String upLoad(MultipartHttpServletRequest request) {
@@ -262,15 +259,69 @@ public class api {
             System.out.println(bindingResult.getFieldError());
 
         }
-
+        System.out.println("save San Pham");
         System.out.println(sp);
 
         sanPhamRepository.save(sp);
 
 
-        return "true";
+        return "Da Them San Pham Thanh Cong ";
     }
 
+    @PostMapping(value = "detailSanPham", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public Json_SanPham detailSanPhan(@RequestParam int maSanPham) {
+
+        SanPham sp = sanPhamRepository.getOne(maSanPham);
+        if (sp != null) {
+            Json_SanPham json_sanPham = new Json_SanPham();
+            json_sanPham.setMaSanPham(sp.getMaSanPham());
+            json_sanPham.setMoTa(sp.getMoTa());
+            json_sanPham.setTenSanPham(sp.getTenSanPham());
+            json_sanPham.setHinhSanPham(sp.getHinhSanPham());
+            json_sanPham.setGiaTien(sp.getGiaTien());
+
+            DanhMucSanPham dmsp = new DanhMucSanPham();
+            dmsp.setMaDanhMuc(sp.getDanhMucSanPham().getMaDanhMuc());
+            dmsp.setTenDanhMuc(sp.getDanhMucSanPham().getTenDanhMuc());
+            json_sanPham.setDanhMucSanPham(dmsp);
+            List<ChiTietSanPham> chiTietSanPhams = new ArrayList<>();
+
+            sp.getDsChiTietSanPham().forEach(new Consumer<ChiTietSanPham>() {
+                @Override
+                public void accept(ChiTietSanPham chiTietSanPham) {
+                    ChiTietSanPham chiTietSanPham1 = new ChiTietSanPham();
+                    MauSanPham mauSanPham = new MauSanPham();
+                    chiTietSanPham1.setMaChiTiet(chiTietSanPham.getMaChiTiet());
+                    mauSanPham.setMaMau(chiTietSanPham.getMauSanPham().getMaMau());
+                    mauSanPham.setTenMau(chiTietSanPham.getMauSanPham().getTenMau());
+                    chiTietSanPham1.setMauSanPham(mauSanPham);
+                    chiTietSanPham1.setNgayNhap(chiTietSanPham.getNgayNhap());
+                    chiTietSanPham1.setSoLuong(chiTietSanPham.getSoLuong());
+                    chiTietSanPhams.add(chiTietSanPham1);
+
+
+                }
+            });
+
+            json_sanPham.setDsChiTietSanPham(chiTietSanPhams);
+
+
+            return json_sanPham;
+        } else
+            return null;
+    }
+
+    @PostMapping("updateSanPham")
+    @ResponseBody
+    @Transactional
+    public String updateSanPham(@ModelAttribute SanPham sp) {
+
+
+        sanPhamRepository.save(sp);
+        System.out.println(sp);
+        return "Update San Pham Thanh Cong ";
+    }
 
 
 }

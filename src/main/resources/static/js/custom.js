@@ -50,7 +50,7 @@ $(document).ready(function () {
             }
 
 
-        })
+        });
         var formatTongTien = tongTiensp.toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.").toString()
 
         $('#tongtien').html(formatTongTien + "");
@@ -107,7 +107,7 @@ $(document).ready(function () {
             success: function (data) {
 
                 if (data === 'success') {
-                    alert(data);
+                    // alert(data);
                     del.closest('tr').remove();
                     loadSp(true);
                 }
@@ -222,13 +222,7 @@ $(document).ready(function () {
 
     });
 
-    $('#form-themSanPham').submit(function (e) {
 
-
-
-
-        //  e.preventDefault(); // avoid to execute the actual submit of the form.
-    });
 
 
     $('body').on('click', '.btn-xoaChiTiet', function () {
@@ -270,6 +264,10 @@ $(document).ready(function () {
 
     });
 
+    $('#form-themSanPham').submit(function (e) {
+        e.preventDefault();
+    });
+
 
     $('#themSanPham').click(function (e) {
         //
@@ -285,9 +283,11 @@ $(document).ready(function () {
         //     alert(maMau[i]);
         // });
 
+
         e.preventDefault();
 
-        alert($('#form-themSanPham').serialize());
+        // alert($(this).val());
+
 
 
         $.ajax({
@@ -302,6 +302,10 @@ $(document).ready(function () {
             success: function (data) {
 
                 alert(data);
+                location.reload();
+
+
+
 
             }
 
@@ -311,5 +315,84 @@ $(document).ready(function () {
 
     });
 
+    $('body').on('click', '.btnSua', function () {
+        var maSanPham = $(this).attr('data-maSanPham');
+
+
+        $.ajax({
+            url: '/api/detailSanPham',
+            type: 'Post',
+            data: {
+                maSanPham: maSanPham
+
+            }
+            ,
+
+            success: function (data) {
+
+                console.log(data);
+
+                $("input[name$='tenSanPham']").val(data.tenSanPham);
+                $("input[name$='giaTien']").val(data.giaTien);
+                $("input[name$='hinhSanPham']").val(data.hinhSanPham);
+                $("textarea[name$='moTa']").val(data.moTa);
+                $("select[name$='danhMucSanPham.maDanhMuc']").val(data.danhMucSanPham.maDanhMuc);
+
+                $('#danhSachChiTiet').empty();
+                for (var i = 0; i < data.dsChiTietSanPham.length; i++) {
+                    var themChiTiet = $('#chiTiet').clone().removeAttr('id');
+
+
+                    $('#danhSachChiTiet').append(themChiTiet);
+
+
+                    refesh();
+
+                    $("select[name$='dsChiTietSanPham[" + i + "].mauSanPham.maMau']").val(data.dsChiTietSanPham[i].mauSanPham.maMau);
+                    $("input[name$='dsChiTietSanPham[" + i + "].soLuong']").val(data.dsChiTietSanPham[i].soLuong);
+
+
+                }
+                $('#themSanPham').hide();
+
+                $('#maSanPham').val(maSanPham);
+                $('#suaSanPham').removeAttr('hidden');
+
+            }
+
+
+        });
+
+
+    });
+
+
+    $('#suaSanPham').click(function (e) {
+
+        e.preventDefault();
+
+
+        console.log($('#form-themSanPham').serialize());
+
+        masp = $(this).attr('data-maSanPham');
+
+        $.ajax({
+            url: '/api/updateSanPham',
+            type: 'Post',
+            data:
+                $('#form-themSanPham').serialize(),
+
+
+            success: function (data) {
+
+                alert(data);
+                $('#Refesh').click();
+
+            }
+
+
+        });
+
+    });
 
 });
