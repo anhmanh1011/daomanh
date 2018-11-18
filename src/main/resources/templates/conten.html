@@ -15,7 +15,7 @@
         <div class="col-md-3 col-sm-6" th:each="sanpham : ${dsSanPham}">
             <a th:href="@{'/chitiet/' + ${sanpham.maSanPham}}">
             <div class=" sanpham wow zoomIn">
-                <img th:src="${sanpham.hinhSanPham}"
+                <img th:src="${'/image/' + sanpham.hinhSanPham}"
                      height="256px" alt="hinh"><br>
                 <span th:text="${sanpham.tenSanPham}"></span><br>
                 <span class="gia" th:text="${sanpham.giaTien}"> </span>

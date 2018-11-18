@@ -65,6 +65,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                    placeholder="Hình ảnh">
                         </div>
                         <input type="text" id="hinhSanPham" name="hinhSanPham" hidden>
+                        <input type="text" id="maSanPham" name="maSanPham" hidden>
 
                         <div class="form-group">
                             <label>Hãng sản xuất</label>
@@ -107,6 +108,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         <input type="button" class=" btn btn-primary  btn-themChiTiet " value="Thêm chi tiết ">
                         <input type="button" class="btn btn-primary" id="themSanPham" value="Thêm sản phẩm">
+                        <input type="button" class="btn btn-primary" id="suaSanPham" value="update sản phẩm" hidden>
                     </form>
 
 
@@ -118,6 +120,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div style="float:right">
 
                         <button class="btn btn-info" id="xoaSanPham"> Xóa</button>
+                        <button class="btn btn-info" id="Refesh"> Refesh</button>
                     </div>
                     <table class="table " id="table-sanpham">
                         <thead>
@@ -131,6 +134,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <th>Tên Sản Phẩm</th>
                             <th> Hãng</th>
                             <th>Giá Tiền</th>
+                            <th>Sửa</th>
 
                         </tr>
                         </thead>
@@ -150,9 +154,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <td><span class="danhmuc" th:attr="data-madanhmuc=${sanpham.danhMucSanPham.maDanhMuc}"
                                       th:text="${sanpham.danhMucSanPham.tenDanhMuc}"></span></td>
 
-                            <td><span class="giaTien" th:attr="data-giatien=${sanpham.giaTien}"
+                            <td><span th:attr="data-giatien=${sanpham.giaTien}"
                                       th:text="${sanpham.giaTien}"></span></td>
+
+
                             <td>
+                                <buttion class=" btn btn-primary btnSua " th:attr="data-maSanPham=${sanpham.maSanPham}">
+                                    Sửa
+                                </buttion>
+
+                            </td>
+
 
                         </tr>
 

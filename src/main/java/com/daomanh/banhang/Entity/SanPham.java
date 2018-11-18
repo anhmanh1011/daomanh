@@ -32,12 +32,12 @@ public class SanPham {
             joinColumns ={@JoinColumn(name = "maSanPham",referencedColumnName = "maSanPham")},
             inverseJoinColumns ={@JoinColumn(name = "maKhuyenMai",referencedColumnName = "maKhuyenMai")} )
 
-    Set<KhuyenMai> danhSachKhuyenMai;
+    List<KhuyenMai> danhSachKhuyenMai;
 
     public SanPham() {
     }
 
-    public SanPham(DanhMucSanPham danhMucSanPham, String tenSanPham, String giaTien, String moTa, String hinhSanPham, List<ChiTietSanPham> dsChiTietSanPham, Set<KhuyenMai> danhSachKhuyenMai) {
+    public SanPham(DanhMucSanPham danhMucSanPham, String tenSanPham, String giaTien, String moTa, String hinhSanPham, List<ChiTietSanPham> dsChiTietSanPham, List<KhuyenMai> danhSachKhuyenMai) {
         this.danhMucSanPham = danhMucSanPham;
         this.tenSanPham = tenSanPham;
         this.giaTien = giaTien;
@@ -55,11 +55,11 @@ public class SanPham {
         this.dsChiTietSanPham = dsChiTietSanPham;
     }
 
-    public Set<KhuyenMai> getDanhSachKhuyenMai() {
+    public List<KhuyenMai> getDanhSachKhuyenMai() {
         return danhSachKhuyenMai;
     }
 
-    public void setDanhSachKhuyenMai(Set<KhuyenMai> danhSachKhuyenMai) {
+    public void setDanhSachKhuyenMai(List<KhuyenMai> danhSachKhuyenMai) {
         this.danhSachKhuyenMai = danhSachKhuyenMai;
     }
 
