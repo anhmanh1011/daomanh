@@ -58,7 +58,7 @@ public class cart_Controller {
     }
 
     @PostMapping("/cart")
-    public String themHoaDon(HoaDon hoaDon, HttpSession httpSession) {
+    public String themHoaDon(HoaDon hoaDon, HttpSession httpSession, Model model) {
 
 
         hoaDon.setNgaylap(new Date().toString());
@@ -98,6 +98,7 @@ public class cart_Controller {
 
             }
 
+            model.addAttribute("result", "1");
 
         }
 

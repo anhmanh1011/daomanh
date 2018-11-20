@@ -17,9 +17,7 @@ public class ChiTietSanPham {
     @JoinColumn(name = "maSanPham")
     SanPham sanPham;
 
-    @OneToOne()
-    @JoinColumn(name = "maSize")
-    SizeSanPham sizeSanPham;
+
 
     @OneToOne()
     @JoinColumn(name = "maMau")
@@ -35,9 +33,9 @@ public class ChiTietSanPham {
     public ChiTietSanPham() {
     }
 
-    public ChiTietSanPham(SanPham sanPham, SizeSanPham sizeSanPham, MauSanPham mauSanPham, int soLuong, String ngayNhap) {
+    public ChiTietSanPham(SanPham sanPham, MauSanPham mauSanPham, int soLuong, String ngayNhap) {
         this.sanPham = sanPham;
-        this.sizeSanPham = sizeSanPham;
+
         this.mauSanPham = mauSanPham;
         this.soLuong = soLuong;
         this.ngayNhap = ngayNhap;
@@ -59,13 +57,6 @@ public class ChiTietSanPham {
         this.sanPham = sanPham;
     }
 
-    public SizeSanPham getSizeSanPham() {
-        return sizeSanPham;
-    }
-
-    public void setSizeSanPham(SizeSanPham sizeSanPham) {
-        this.sizeSanPham = sizeSanPham;
-    }
 
     public MauSanPham getMauSanPham() {
         return mauSanPham;
@@ -96,7 +87,7 @@ public class ChiTietSanPham {
         return "ChiTietSanPham{" +
                 "maChiTiet=" + maChiTiet +
                 ", sanPham=" + sanPham +
-                ", sizeSanPham=" + sizeSanPham +
+
                 ", mauSanPham=" + mauSanPham +
                 ", soLuong=" + soLuong +
                 ", ngayNhap='" + ngayNhap + '\'' +

@@ -40,13 +40,9 @@ public class ChiTietConntroller {
     }
 
     @GetMapping("chitiet/{masanpham}")
-    public  String chiTietSanPham(@PathVariable int masanpham , Model model, HttpSession httpSession, Principal principal) {
+    public String chiTietSanPham(@PathVariable int masanpham, Model model, HttpSession httpSession) {
 
-        if(principal != null){
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            model.addAttribute("username",loginedUser.getUsername());
 
-        }
 
         SanPham sanPham = sanPhamRepository.getOne(masanpham);
         model.addAttribute("ChiTietSanPham",sanPham);

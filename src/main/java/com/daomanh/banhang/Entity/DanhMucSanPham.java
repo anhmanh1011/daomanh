@@ -1,6 +1,7 @@
 package com.daomanh.banhang.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "DANHMUCSANPHAM")
@@ -16,16 +17,14 @@ public class DanhMucSanPham {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "maDanhMuc")
-    Set<SanPham> dsSanPham;
+    List<SanPham> dsSanPham;
 
 
-
-
-    public Set<SanPham> getDsSanPham() {
+    public List<SanPham> getDsSanPham() {
         return dsSanPham;
     }
 
-    public void setDsSanPham(Set<SanPham> dsSamPham) {
+    public void setDsSanPham(List<SanPham> dsSamPham) {
         this.dsSanPham = dsSamPham;
     }
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="sidebar-menu">
+
+
+<div style="border-top:1px ridge rgba(255, 255, 255, 0.15)"></div>
+<div class="menu">
+    <ul id="menu">
+        <li><a th:href="@{/dashboard}"><i class="fa fa-tachometer"></i> <span>Dashboard</span>
+            <div class="clearfix"></div>
+        </a></li>
+
+
+        <li id="menu-academico"><a th:href="@{/themsanpham}"><i
+                class="fa fa-product-hunt"></i><span>Sản Phẩm </span>
+            <div class="clearfix"></div>
+        </a></li>
+        <li id="menu-academico"><a th:href="@{/themDanhMuc}"><i
+                class="fa fa-product-hunt"></i><span>Danh Muc San Pham </span>
+            <div class="clearfix"></div>
+        </a></li>
+        <li id="menu-academico"><a th:href="@{/hoadon}"><i
+                class="fa fa-product-hunt"></i><span>hoa Don </span>
+            <div class="clearfix"></div>
+        </a></li>
+
+    </ul>
+</div>
+
+
+</body>
+</html>

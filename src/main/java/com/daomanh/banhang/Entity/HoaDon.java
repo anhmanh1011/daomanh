@@ -1,6 +1,7 @@
 package com.daomanh.banhang.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class HoaDon {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "maHoaDon")
-    Set<ChiTietHoaDon> danhSachChiTietHoaDon;
+    List<ChiTietHoaDon> danhSachChiTietHoaDon;
 
     public String getDiachi() {
         return diachi;
@@ -54,14 +55,13 @@ public class HoaDon {
         this.ghiChu = ghiChu;
     }
 
-//    public Set<ChiTietHoaDon> getDanhSachChiTietHoaDon() {
-//        return danhSachChiTietHoaDon;
-//    }
-//
-//    public void setDanhSachChiTietHoaDon(Set<ChiTietHoaDon> danhSachChiTietHoaDon) {
-//        this.danhSachChiTietHoaDon = danhSachChiTietHoaDon;
-//    }
+    public List<ChiTietHoaDon> getDanhSachChiTietHoaDon() {
+        return danhSachChiTietHoaDon;
+    }
 
+    public void setDanhSachChiTietHoaDon(List<ChiTietHoaDon> danhSachChiTietHoaDon) {
+        this.danhSachChiTietHoaDon = danhSachChiTietHoaDon;
+    }
 
     public int getMaHoaDon() {
         return maHoaDon;
