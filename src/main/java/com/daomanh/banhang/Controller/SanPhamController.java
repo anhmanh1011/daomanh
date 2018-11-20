@@ -29,15 +29,11 @@ public class SanPhamController {
     }
 
     @GetMapping("/sanpham/{maDanhMuc}")
-    public String SanPham(@PathVariable int maDanhMuc, Model model, Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            model.addAttribute("username", loginedUser.getUsername());
+    public String SanPham(@PathVariable int maDanhMuc, Model model) {
 
-        }
 
         DanhMucSanPham danhMucSanPham = danhMucSanPhamRepository.getOne(maDanhMuc);
-        Set<SanPham> dsSanPham = danhMucSanPham.getDsSanPham();
+        List<SanPham> dsSanPham = danhMucSanPham.getDsSanPham();
 
         model.addAttribute("dsSanPham", dsSanPham);
 

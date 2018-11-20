@@ -47,11 +47,7 @@ public class home_Controller {
     @GetMapping("/home")
     public String home(Model model, Principal principal){
 
-        if(principal != null){
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            model.addAttribute("username",loginedUser.getUsername());
 
-        }
 
         List<SanPham> sanPhams = new ArrayList<>();
         Page<SanPham> listProduct = sanPhamService.findListProduct(0, 20);

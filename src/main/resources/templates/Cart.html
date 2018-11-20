@@ -112,7 +112,15 @@
 <div id="footer" class="container-fluid">
     <div th:replace="footer.html :: footer"></div>
 </div>
+<script th:inline="javascript">
 
+    var result = [[${result}]];
+    if (result == "1") {
+
+        alert("them don hang thanh cong")
+    }
+
+</script>
 </body>
 
 </html>

@@ -29,7 +29,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- lined-icons -->
     <link rel="stylesheet" href="admin/css/icon-font.min.css" type='text/css'/>
     <!-- //lined-icons -->
-    <script src="jquery/jquery.js"></script>
+    <!--<script src="jquery/jquery.js"></script>-->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/custom.js"></script>
     <!-- //lined-icons -->
@@ -38,77 +38,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="page-container">
     <!--/content-inner-->
     <div class="left-content">
-        <div class="container-fluid">
+        <div class="mother-grid-inner">
             <div class="row">
                 <div class="col-sm-6 col-md-6">
 
-                    <h1>Thêm Sản phẩm</h1>
-                    <form id="form-themSanPham">
+                    <h1>Thêm Danh Muc </h1>
+                    <form id="form-themDanhMuc">
                         <div class="form-group">
-                            <label for="formGroupExampleInput">Tên sản phẩm </label>
+                            <label for="formGroupExampleInput">Tên Danh Muc </label>
                             <input type="text" class="form-control" id="formGroupExampleInput"
-                                   name="tenSanPham" placeholder="Nhập vào tên  sản phẩm">
+                                   name="tenDanhMuc" placeholder="Nhập vào tên  Danh Muc ">
                         </div>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput2">Giá Tiền </label>
-                            <input type="text" class="form-control" id="formGroupExampleInput2"
-                                   name="giaTien" placeholder="nhập giá tiền ">
-                        </div>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput3">Mô tả </label>
-                            <textarea type="text" rows="5" class="form-control" id="formGroupExampleInput3"
-                                      name="moTa" placeholder="nhập vào mô tả "></textarea>
-                        </div>
+
+
                         <div class="form-group">
                             <label>Hình ảnh </label>
-                            <input type="file" class="form-control" id="fileSanPham"
+                            <input type="file" class="form-control" id="fileDanhMuc"
                                    placeholder="Hình ảnh">
                         </div>
-                        <input type="text" id="hinhSanPham" name="hinhSanPham" hidden>
-                        <input type="text" id="maSanPham" name="maSanPham" hidden>
-
-                        <div class="form-group">
-                            <label>Hãng sản xuất</label>
-                            <select name="danhMucSanPham.maDanhMuc" class="form-control">
-                                <option th:each="danhmuc : ${listDanhMuc}" th:value="${danhmuc.maDanhMuc}"
-                                        th:text="${danhmuc.tenDanhMuc}"></option>
-
-                            </select>
+                        <input type="text" id="hinhDanhMuc" name="hinhDanhMuc" hidden>
+                        <input type="text" id="maDanhMuc" name="maDanhMuc" hidden>
 
 
-                        </div>
-
-
-                        <div id="danhSachChiTiet">
-
-
-                        </div>
-
-
-                        <div id="chiTiet">
-                            <button class=" btn btn-primary btn-xoaChiTiet "> Xóa Chi Tiết</button>
-
-                            <div class="form-group">
-                                <label>Màu Sản Phẩm </label>
-                                <select class="form-control Mau">
-                                    <option th:each="mau : ${listMau}" th:value="${mau.maMau}"
-                                            th:text="${mau.tenMau}"></option>
-
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">Số lượng </label>
-                                <input type="number" class="form-control soLuong"
-                                       placeholder="Nhập vào số Lượng ">
-                            </div>
-
-
-                        </div>
-
-                        <input type="button" class=" btn btn-primary  btn-themChiTiet " value="Thêm chi tiết ">
-                        <input type="button" class="btn btn-primary" id="themSanPham" value="Thêm sản phẩm">
-                        <input type="button" class="btn btn-primary" id="suaSanPham" value="update sản phẩm" hidden>
+                        <input type="button" class="btn btn-primary" id="themDanhMuc" value="Thêm Danh Muc ">
+                        <input type="button" class="btn btn-primary" id="suaDanhMuc" value="update danh Muc " hidden>
                     </form>
 
 
@@ -116,50 +69,52 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
                 <div class="col-sm-6 col-md-6">
-                    <h3>Sản Phẩm</h3>
+                    <h3>Danh Muc </h3>
                     <div style="float:right">
 
-                        <button class="btn btn-info" id="xoaSanPham"> Xóa</button>
+                        <button class="btn btn-info" id="xoaDanhMuc"> Xóa</button>
                         <button class="btn btn-info" id="Refesh"> Refesh</button>
                     </div>
-                    <table class="table " id="table-sanpham">
+                    <table class="table " id="table-danhmuc">
                         <thead>
                         <tr>
                             <th>
                                 <div class="checkbox">
-                                    <label><input id="checkAll" type="checkbox" value="checkAll">Chọn Tất Cả</label>
+                                    <label><input id="checkAllDanhMuc" type="checkbox" value="checkAll">Chọn Tất
+                                        Cả</label>
                                 </div>
 
                             </th>
-                            <th>Tên Sản Phẩm</th>
-                            <th> Hãng</th>
-                            <th>Giá Tiền</th>
+                            <th>STT</th>
+                            <th> tên Danh Muc</th>
+                            <th>Thương Hiệu</th>
                             <th>Sửa</th>
 
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="sanpham : ${listProduct}">
+                        <tr th:each="danhMuc,iter : ${listDanhMuc}">
+
                             <td>
                                 <div class="checkbox">
-                                    <label><input class="checkboxsanpham" type="checkbox"
-                                                  th:value="${sanpham.maSanPham}"></label>
+                                    <label><input class="checkBoxDanhMuc" type="checkbox"
+                                                  th:value="${danhMuc.maDanhMuc}"></label>
                                 </div>
 
                             </td>
 
-                            <td><span class="sanpham" th:attr="data-masanpham=${sanpham.maSanPham}"
-                                      th:text="${sanpham.tenSanPham}"></span></td>
 
-                            <td><span class="danhmuc" th:attr="data-madanhmuc=${sanpham.danhMucSanPham.maDanhMuc}"
-                                      th:text="${sanpham.danhMucSanPham.tenDanhMuc}"></span></td>
+                            <td><span th:text="${iter.index}"></span></td>
 
-                            <td><span th:attr="data-giatien=${sanpham.giaTien}"
-                                      th:text="${sanpham.giaTien}"></span></td>
+                            <td><span th:text="${danhMuc.tenDanhMuc}"></span></td>
+
+                            <td><img style=" width: 100px; height: 100px; " th:src="${'/image/' + danhMuc.hinhDanhMuc}">
+                            </td>
 
 
                             <td>
-                                <buttion class=" btn btn-primary btnSua " th:attr="data-maSanPham=${sanpham.maSanPham}">
+                                <buttion class=" btn btn-primary btnSuaDanhMuc "
+                                         th:attr="data-maDanhMuc=${danhMuc.maDanhMuc}">
                                     Sửa
                                 </buttion>
 
@@ -197,20 +152,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!--//content-inner-->
 
 
-    <script>
-        $(document).ready(function () {
-            var navoffeset = $(".header-main").offset().top;
-            $(window).scroll(function () {
-                var scrollpos = $(window).scrollTop();
-                if (scrollpos >= navoffeset) {
-                    $(".header-main").addClass("fixed");
-                } else {
-                    $(".header-main").removeClass("fixed");
-                }
-            });
+    <!--<script>-->
+    <!--$(document).ready(function () {-->
+    <!--var navoffeset = $(".header-main").offset().top;-->
+    <!--$(window).scroll(function () {-->
+    <!--var scrollpos = $(window).scrollTop();-->
+    <!--if (scrollpos >= navoffeset) {-->
+    <!--$(".header-main").addClass("fixed");-->
+    <!--} else {-->
+    <!--$(".header-main").removeClass("fixed");-->
+    <!--}-->
+    <!--});-->
 
-        });
-    </script>
+    <!--});-->
+    <!--</script>-->
     <!-- /script-for sticky-nav -->
     <!--inner block start here-->
     <div class="inner-block">

@@ -2,16 +2,11 @@
 
 
  import com.daomanh.banhang.Entity.*;
- import com.daomanh.banhang.repository.ChiTietHoaDonRepository;
- import com.daomanh.banhang.repository.ChiTietSanPhamRepository;
- import com.daomanh.banhang.repository.HoaDonRepository;
- import com.daomanh.banhang.repository.SanPhamRepository;
+ import com.daomanh.banhang.repository.*;
  import com.daomanh.banhang.service.SanPhamService;
- import org.hibernate.Session;
- import org.hibernate.SessionFactory;
+
  import org.springframework.beans.factory.annotation.Autowired;
- import org.springframework.core.io.ClassPathResource;
- import org.springframework.core.io.PathResource;
+
  import org.springframework.data.domain.Page;
  import org.springframework.transaction.annotation.Transactional;
  import org.springframework.ui.Model;
@@ -19,17 +14,14 @@
 import org.springframework.web.bind.annotation.*;
  import org.springframework.web.multipart.MultipartFile;
  import org.springframework.web.multipart.MultipartHttpServletRequest;
- import org.springframework.web.multipart.MultipartRequest;
- import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
 
  import javax.persistence.EntityManager;
- import javax.persistence.EntityManagerFactory;
- import javax.servlet.ServletContext;
+
 import javax.servlet.http.HttpSession;
  import java.io.File;
  import java.io.IOException;
- import java.net.MalformedURLException;
- import java.nio.file.Paths;
+
  import java.util.*;
 import java.util.function.Consumer;
 
@@ -52,6 +44,11 @@ public class api {
 
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
+    DanhMucSanPhamRepository danhMucSanPhamRepository;
+
+
 
 
     @GetMapping("/themGioHang")
@@ -213,10 +210,71 @@ public class api {
         });
 
         sanPhamRepository.deleteById(maSanPham);
-        System.out.println("xoa ok");
+        System.out.println("xoa san pham ma " + maSanPham + " ok");
 
 
         return "ok";
+
+    }
+
+    @GetMapping("/xoadanhmuc")
+    @ResponseBody
+    @Transactional
+    public String xoaDanhMuc(@RequestParam int maDanhMuc) {
+
+        System.out.println(maDanhMuc);
+
+
+        DanhMucSanPham danhMucSanPham = danhMucSanPhamRepository.getOne(maDanhMuc);
+
+        List<SanPham> dsSanpham = danhMucSanPham.getDsSanPham();
+
+        dsSanpham.forEach(new Consumer<SanPham>() {
+            @Override
+            public void accept(SanPham sanPham) {
+
+                xoaSanPham(sanPham.getMaSanPham());
+
+            }
+        });
+
+        danhMucSanPhamRepository.deleteById(maDanhMuc);
+
+        System.out.println("xoa san pham ma " + maDanhMuc + " ok");
+
+
+        return "true";
+
+    }
+
+    @GetMapping("/xoaHoaDon")
+    @ResponseBody
+    @Transactional
+    public String xoaHoaDon(@RequestParam int maHoaDon) {
+
+        System.out.println(maHoaDon);
+
+        try {
+
+
+            entityManager.createQuery(" DELETE ChiTietHoaDon  WHERE ma_hoa_don = " + maHoaDon).executeUpdate();
+
+
+            hoaDonRepository.deleteById(maHoaDon);
+
+            System.out.println("xoa Hoa Don ma " + maHoaDon + " ok");
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return "false";
+
+
+        }
+
+
+        return "true";
 
     }
 
@@ -266,6 +324,25 @@ public class api {
 
 
         return "Da Them San Pham Thanh Cong ";
+    }
+
+
+    @PostMapping("SaveDanhMuc")
+    @ResponseBody
+    @Transactional
+    public String themDanhMuc(@ModelAttribute DanhMucSanPham danhMucSanPham, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+
+            System.out.println(bindingResult.getFieldError());
+
+        }
+        System.out.println("save Danh Muc ");
+        System.out.println(danhMucSanPham);
+
+        danhMucSanPhamRepository.save(danhMucSanPham);
+
+
+        return "Da Them Danh Muc Thanh Cong ";
     }
 
     @PostMapping(value = "detailSanPham", produces = "application/json; charset=utf-8")
@@ -322,6 +399,51 @@ public class api {
         System.out.println(sp);
         return "Update San Pham Thanh Cong ";
     }
+
+    @PostMapping("updateDanhMuc")
+    @ResponseBody
+    @Transactional
+    public String updateDanhMuc(@ModelAttribute DanhMucSanPham danhMucSanPham) {
+
+
+        danhMucSanPhamRepository.save(danhMucSanPham);
+        System.out.println(danhMucSanPham);
+        return "Update Danh muc  Thanh Cong ";
+    }
+
+    @PostMapping(value = "detailDanhMuc", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public Json_DanhMucSanPham detailDanhMuc(@RequestParam int maDanhMuc) {
+
+        DanhMucSanPham danhMucSanPham = danhMucSanPhamRepository.getOne(maDanhMuc);
+        Json_DanhMucSanPham json_danhMucSanPham = new Json_DanhMucSanPham();
+
+        json_danhMucSanPham.setMaDanhMuc(danhMucSanPham.getMaDanhMuc());
+        json_danhMucSanPham.setHinhDanhMuc(danhMucSanPham.getHinhDanhMuc());
+        json_danhMucSanPham.setTenDanhMuc(danhMucSanPham.getTenDanhMuc());
+
+        return json_danhMucSanPham;
+
+    }
+
+    @PostMapping(value = "changeStatusHoaDon")
+    @ResponseBody
+    public String changeStatusHoaDon(@RequestParam int maHoaDon, @RequestParam Boolean status) {
+
+        if (maHoaDon != 0) {
+            HoaDon hoaDon = hoaDonRepository.getOne(maHoaDon);
+            hoaDon.setTinhTrang(status);
+            hoaDonRepository.save(hoaDon);
+            return "true";
+        }
+
+        return "false";
+
+    }
+
+
+
+
 
 
 }

@@ -163,6 +163,23 @@ $(document).ready(function () {
 
     });
 
+    $('#checkAllDanhMuc').change(function () {
+
+        if (this.checked) {
+            $('#table-danhmuc input').each(function () {
+                $(this).attr('checked', true);
+            })
+        }
+        else {
+            $('#table-danhmuc input').each(function () {
+                $(this).attr('checked', false);
+            })
+
+        }
+
+
+    });
+
 
     $('#xoaSanPham').click(function () {
 
@@ -191,11 +208,70 @@ $(document).ready(function () {
 
     });
 
+    $('#xoaDanhMuc').click(function () {
+
+        var check = $('tbody input:checked');
+        check.each(function () {
+            var maDanhMuc = this.value;
+            var This = $(this);
+            $.ajax({
+                url: '/api/xoadanhmuc',
+                type: 'Get',
+                data: {
+                    maDanhMuc: maDanhMuc
+                },
+
+                success: function (data) {
+
+                    This.closest('tr').remove();
+
+                }
+
+
+            });
+
+        })
+
+
+    });
+
+    $('#xoaHoaDon').click(function () {
+        console.log("xoa hoa don");
+
+        var check = $('tbody .checkBoxHoaDon');
+        check.each(function () {
+
+            if (this.checked) {
+                var maHoaDon = this.value;
+                var This = $(this);
+                $.ajax({
+                    url: '/api/xoaHoaDon',
+                    type: 'Get',
+                    data: {
+                        maHoaDon: maHoaDon
+                    },
+
+                    success: function (data) {
+
+                        if (data == "true")
+                            This.closest('tr').remove();
+
+                    }
+
+
+                });
+            }
+
+        });
+
+
+    });
+
 
     var files = [];
     var hinhSanPham = "";
 
-    $('#file').change(function (event) {
+    $('#fileSanPham').change(function (event) {
 
         files = event.target.files;
         hinhSanPham = files[0].name;
@@ -222,7 +298,34 @@ $(document).ready(function () {
 
     });
 
+    var hinhDanhMuc = "";
+    $('#fileDanhMuc').change(function (event) {
 
+        files = event.target.files;
+        hinhDanhMuc = files[0].name;
+        console.log(hinhSanPham);
+        forms = new FormData();
+        forms.append('hinhanh', files[0]);
+
+        $.ajax({
+            url: '/api/upLoadFile',
+            type: 'Post',
+            data: forms,
+            contentType: false,
+            processData: false,
+            enctype: "multipart/form-data",
+
+            success: function (data) {
+
+
+                $('#hinhDanhMuc').val(hinhDanhMuc);
+
+            }
+
+
+        });
+
+    });
 
 
     $('body').on('click', '.btn-xoaChiTiet', function () {
@@ -270,24 +373,11 @@ $(document).ready(function () {
 
 
     $('#themSanPham').click(function (e) {
-        //
-        // var tensp = $('input[name=tenSanPham]').val();
-        // var giaTien = $('input[name=giaTien]').val();
-        // var moTa = $('textarea[name=moTa]').val();
-        // var maDanhMuc = $('select[name=maDanhMuc]').val();
-        // var maMau=[];
-        // var i = 0;
-        // $('#danhSachChiTiet').find('.Mau').each(function () {
-        //    maMau[i] = $(this).val();
-        //
-        //     alert(maMau[i]);
-        // });
 
 
         e.preventDefault();
 
         // alert($(this).val());
-
 
 
         $.ajax({
@@ -305,6 +395,35 @@ $(document).ready(function () {
                 location.reload();
 
 
+            }
+
+
+        });
+
+
+    });
+
+    $('#themDanhMuc').click(function (e) {
+
+
+        e.preventDefault();
+
+        // alert($(this).val());
+
+
+        $.ajax({
+            url: '/api/SaveDanhMuc',
+            type: 'Post',
+            data:
+                $('#form-themDanhMuc').serialize(),
+            hinhSanPham: hinhSanPham
+
+            ,
+
+            success: function (data) {
+
+                alert(data);
+                location.reload();
 
 
             }
@@ -365,6 +484,74 @@ $(document).ready(function () {
 
 
     });
+    $('body').on('click', '.btnSuaDanhMuc', function () {
+        var maDanhMuc = $(this).attr('data-maDanhMuc');
+
+
+        $.ajax({
+            url: '/api/detailDanhMuc',
+            type: 'Post',
+            data: {
+                maDanhMuc: maDanhMuc
+
+            }
+            ,
+
+            success: function (data) {
+
+                console.log(data);
+
+                $("input[name$='tenDanhMuc']").val(data.tenDanhMuc);
+
+                $("input[name$='hinhDanhMuc']").val(data.hinhDanhMuc);
+                $('#maDanhMuc').val(maDanhMuc);
+
+
+                $('#danhSachChiTiet').empty();
+
+                $('#themDanhMuc').hide();
+
+
+                $('#suaDanhMuc').removeAttr('hidden');
+
+            }
+
+
+        });
+
+
+    });
+
+    $('body').on('change', '.checkBoxStatus', function () {
+        var maHoaDon = $(this).val();
+        var status = 0;
+        if (this.checked) {
+            status = 1;
+        }
+
+
+        $.ajax({
+            url: '/api/changeStatusHoaDon',
+            type: 'Post',
+            data: {
+                maHoaDon: maHoaDon,
+                status: status
+
+            }
+            ,
+
+            success: function (data) {
+
+                console.log(data);
+                alert(data);
+
+            }
+
+
+        });
+
+
+    });
 
 
     $('#suaSanPham').click(function (e) {
@@ -394,5 +581,44 @@ $(document).ready(function () {
         });
 
     });
+    $('#suaDanhMuc').click(function (e) {
+
+        e.preventDefault();
+
+
+        console.log($('#form-themDanhMuc').serialize());
+
+
+        $.ajax({
+            url: '/api/updateDanhMuc',
+            type: 'Post',
+            data:
+                $('#form-themDanhMuc').serialize(),
+
+
+            success: function (data) {
+
+                alert(data);
+                location.reload();
+
+            }
+
+
+        });
+
+    });
+
+
+    var tong = 0;
+    $('.tien').each(function () {
+        var t = $(this).attr('data-giaTien');
+
+        tong += parseInt(t);
+
+    });
+
+    $('#tongTien').html(tong + 'VND');
+
+
 
 });
